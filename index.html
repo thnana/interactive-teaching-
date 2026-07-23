@@ -1,0 +1,1035 @@
+<html data-type="html" data-identifier="0c5849a3-2161-432b-984b-2cee7660cf06" data-title="《林黛玉初入贾府》互动教学网站" data-version="21" width="1200" height="800"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>林黛玉初入贾府</title>
+<style>
+:root{
+  --paper:#f5f1e7;--paper-deep:#e8dfca;--ink:#26312c;--muted:#5f6b63;
+  --jade:#6f8a7e;--jade-deep:#3c5b4f;--red:#9a4c41;--gold:#a98a52;
+  --indigo:#2f4451;--line:rgba(48,73,64,.2);--shadow:0 22px 65px rgba(37,54,47,.16)
+}
+*{box-sizing:border-box}
+html,body{
+  width:100%;height:100%;margin:0;overflow:hidden;background:#d4dcd6;color:var(--ink);
+  font-family:"Noto Serif SC","Songti SC","STSong",serif
+}
+button{font:inherit}
+button:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+#app{
+  position:relative;width:100%;height:100%;min-width:600px;min-height:500px;padding:18px;
+  background:radial-gradient(circle at 88% 3%,rgba(255,255,255,.8),transparent 29%),linear-gradient(135deg,#e8ece6,#ccd8d0)
+}
+#app:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.13;
+  background:repeating-linear-gradient(0deg,transparent 0 5px,rgba(65,64,48,.08) 6px)
+}
+.frame{
+  position:relative;z-index:1;width:100%;height:100%;display:grid;grid-template-columns:92px minmax(0,1fr);
+  overflow:hidden;background:var(--paper);border:1px solid rgba(255,255,255,.8);box-shadow:var(--shadow)
+}
+.sidebar{
+  position:relative;z-index:15;display:flex;flex-direction:column;align-items:center;
+  padding:24px 12px;border-right:1px solid var(--line);background:rgba(232,238,232,.86)
+}
+.seal{
+  width:50px;height:50px;display:grid;place-items:center;margin-bottom:30px;color:#fff;
+  background:var(--red);font-size:22px;box-shadow:inset 0 0 0 4px rgba(255,255,255,.16)
+}
+.nav{display:flex;flex-direction:column;align-items:center;gap:11px;width:100%}
+.nav-btn{
+  position:relative;width:52px;min-height:76px;border:0;background:transparent;color:#78837c;
+  writing-mode:vertical-rl;letter-spacing:5px;cursor:pointer;font-size:15px
+}
+.nav-btn:before{
+  content:"";position:absolute;left:-7px;top:50%;width:3px;height:0;background:var(--red);
+  transform:translateY(-50%);transition:.25s
+}
+.nav-btn.active{color:var(--ink);font-weight:700}
+.nav-btn.active:before{height:30px}
+.utility{margin-top:auto;display:grid;gap:9px}
+.circle-btn{
+  width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.62);color:var(--jade-deep);cursor:pointer;font-size:15px
+}
+.main{position:relative;min-width:0;overflow:hidden}
+.topbar{
+  position:relative;z-index:10;height:74px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;border-bottom:1px solid var(--line);background:rgba(249,247,240,.88)
+}
+.brand{display:flex;align-items:baseline;gap:14px}
+#main-title{margin:0;font-size:23px;letter-spacing:5px;font-weight:600}
+.brand-sub{font-size:11px;color:var(--muted);letter-spacing:3px}
+.progress{display:flex;align-items:center;gap:11px;color:var(--muted);font-size:12px}
+.progress-track{width:130px;height:3px;background:#d7d7cc}
+.progress-fill{width:12%;height:100%;background:var(--red);transition:.35s}
+.view{
+  position:absolute;inset:74px 0 0;overflow:auto;opacity:0;visibility:hidden;
+  pointer-events:none;transform:translateY(7px);transition:.32s ease
+}
+.view.active{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+.image-wrap{position:relative;overflow:hidden;background:#dce2dc}
+.original-image{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.76) contrast(.97)}
+.image-fallback{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:24px;
+  text-align:center;color:var(--muted);background:linear-gradient(135deg,#ebf0ea,#dce4dd);
+  font-size:13px;line-height:1.8
+}
+.image-fallback.show{display:flex}
+
+/* 扉页 */
+.home-grid{height:100%;display:grid;grid-template-columns:42% 58%;overflow:hidden}
+.home-copy{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:8vh 5vw}
+#home-heading{margin:0;font-size:clamp(44px,5.4vw,72px);font-weight:500;letter-spacing:7px;white-space:nowrap}
+#home-heading .accent{color:var(--jade-deep)}
+.home-quote-wrap{margin:52px 0 0;display:flex;gap:14px;max-width:340px}
+.home-quote-rule{width:2px;background:linear-gradient(var(--red),transparent);flex:none;margin-top:4px}
+.brush-quote{
+  margin:0;font-family:"STXinwei","Xinwei SC","华文新魏","STKaiti","KaiTi",cursive;
+  font-size:clamp(16px,1.4vw,20px);line-height:2.05;color:#3c5648;letter-spacing:1px;
+  opacity:0;animation:quoteIn 2s ease .3s forwards
+}
+@keyframes quoteIn{to{opacity:1}}
+.primary{
+  width:170px;height:48px;margin-top:38px;border:0;background:var(--jade-deep);
+  color:#fff;letter-spacing:4px;font-size:15px;cursor:pointer;box-shadow:0 8px 22px rgba(60,91,79,.24);
+  transition:.22s
+}
+.primary:hover{background:#33503f;letter-spacing:6px}
+.home-art{background:#0f1a15}
+.home-art .original-image{transform:scale(1.0);animation:slowZoom 18s ease-in-out infinite alternate}
+@keyframes slowZoom{to{transform:scale(1.04)}}
+.home-art:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,var(--paper),transparent 15%,transparent 82%,rgba(31,50,42,.12))
+}
+
+/* 入府 */
+.chapter-layout{height:100%;display:grid;grid-template-columns:minmax(0,1fr) 400px}
+.scene{position:relative;min-height:600px}
+.scene-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 58%,rgba(25,40,34,.15))}
+.chapter-badge{
+  position:absolute;left:25px;top:23px;z-index:4;padding:12px 16px;background:rgba(43,69,59,.85);
+  color:#fff;font-size:13px;letter-spacing:3px;backdrop-filter:blur(6px)
+}
+.scene-switcher{
+  position:absolute;left:24px;bottom:22px;z-index:6;display:flex;gap:7px;flex-wrap:wrap;
+  max-width:90%;padding:7px;background:rgba(245,242,233,.88);backdrop-filter:blur(7px)
+}
+.scene-dot{border:0;background:transparent;padding:9px 12px;color:var(--muted);cursor:pointer;font-size:12.5px}
+.scene-dot.active{background:var(--jade-deep);color:#fff}
+.hotspot{
+  position:absolute;z-index:5;width:32px;height:32px;border-radius:50%;border:1px solid #fff;
+  background:rgba(154,76,65,.92);color:#fff;box-shadow:0 0 0 7px rgba(255,255,255,.22);
+  cursor:pointer;transform:translate(-50%,-50%);animation:pulse 2.2s infinite
+}
+.hotspot:after{content:"+";font-size:18px}
+@keyframes pulse{50%{box-shadow:0 0 0 13px rgba(255,255,255,0)}}
+.study-panel{padding:26px 25px 36px;overflow:auto;border-left:1px solid var(--line);background:rgba(249,247,240,.98)}
+.panel-kicker{font-size:11px;color:var(--red);letter-spacing:4px}
+#chapter-heading{margin:11px 0;font-size:26px;font-weight:500;letter-spacing:3px}
+#chapter-summary{margin:0;font-size:13.5px;line-height:1.9;color:var(--muted)}
+.source-box{
+  margin-top:18px;padding:15px 16px;background:#e9efea;border-left:3px solid var(--jade);
+  font-size:14px;line-height:1.95
+}
+.method-row{display:flex;gap:6px;margin-top:16px}
+.method{
+  flex:1;padding:9px 3px;border:1px solid var(--line);background:#fffdf8;
+  text-align:center;font-size:11px;color:var(--muted);transition:.2s
+}
+.method.done{background:var(--jade-deep);border-color:var(--jade-deep);color:#fff}
+.question-box{margin-top:19px;padding-top:16px;border-top:1px solid var(--line)}
+.question-box strong{display:block;margin-bottom:11px;font-size:14px;line-height:1.7}
+.answers{display:grid;gap:8px}
+.answer{
+  display:grid;grid-template-columns:22px 1fr;gap:8px;width:100%;padding:11px 12px;
+  border:1px solid var(--line);background:#fffdf8;text-align:left;color:#54605a;
+  cursor:pointer;font-size:13px;line-height:1.7;transition:.18s
+}
+.answer:hover{border-color:var(--jade);background:#eef3ef}
+.answer.selected{border-color:var(--jade-deep);background:#e4ede8;color:var(--ink)}
+.answer-letter{font-weight:700;color:var(--jade-deep)}
+.feedback{
+  min-height:50px;margin:11px 0 0;padding:12px 13px;background:#f0e9dc;
+  color:#6b5a49;font-size:12.5px;line-height:1.85
+}
+.evidence-tools{display:flex;gap:8px;margin-top:11px}
+.mini-btn{
+  flex:1;padding:9px 6px;border:1px solid var(--line);background:#fffdf8;
+  color:var(--jade-deep);font-size:12px;letter-spacing:1px;cursor:pointer
+}
+.mini-btn:disabled{opacity:.42;cursor:not-allowed}
+.mini-btn:not(:disabled):hover{background:#e6eeea;border-color:var(--jade)}
+.deep-card{
+  display:none;margin-top:10px;padding:12px 13px;background:#eef1e6;border-left:3px solid var(--gold);
+  color:#4b5a45;font-size:12.5px;line-height:1.85
+}
+.deep-card.show{display:block;animation:cardIn .22s ease}
+.deep-card b{display:block;margin-bottom:6px;color:var(--red);letter-spacing:1px}
+.revision-box{display:none;margin-top:11px;padding:13px;background:#e6eee9;border:1px solid rgba(60,91,79,.22)}
+.revision-box.show{display:block}
+.revision-box>div{font-size:12.5px;line-height:1.7}
+.revision-actions{display:flex;gap:8px;margin-top:9px}
+.revision-btn{
+  flex:1;padding:8px 5px;border:1px solid var(--jade);background:#fff;color:var(--jade-deep);
+  font-size:12px;cursor:pointer
+}
+.revision-btn:hover,.revision-btn.selected{background:var(--jade-deep);color:#fff}
+@keyframes cardIn{from{opacity:0;transform:translateY(-4px)}}
+
+/* 目光 */
+.perspective-view{padding:28px 32px 42px;background:#f2eee3}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+.section-head h2{margin:0;font-size:28px;font-weight:500;letter-spacing:4px}
+.section-head p{margin:7px 0 0;font-size:13px;color:var(--muted)}
+.view-counter{padding:8px 12px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+.gaze-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.gaze-tab{
+  padding:9px 16px;border:1px solid var(--line);background:#faf8f1;
+  color:var(--muted);font-size:13px;letter-spacing:1px;cursor:pointer
+}
+.gaze-tab.active{background:var(--jade-deep);border-color:var(--jade-deep);color:#fff}
+.perspective-grid{display:grid;grid-template-columns:1fr 108px 1fr;gap:20px;min-height:395px}
+.person-card{display:grid;grid-template-rows:240px auto;overflow:hidden;border:1px solid var(--line);background:#faf8f1}
+.person-image{position:relative}
+.person-image .original-image{object-position:center 20%;filter:saturate(.7)}
+.person-overlay{
+  position:absolute;left:0;right:0;bottom:0;padding:32px 18px 13px;
+  background:linear-gradient(transparent,rgba(28,43,37,.75));color:#fff
+}
+.person-overlay h3{margin:0;font-size:19px;font-weight:500;letter-spacing:3px}
+.person-copy{padding:16px 19px}
+.person-copy p{margin:0;font-size:13px;line-height:1.85;color:var(--muted)}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.tag{padding:6px 10px;background:#e7ede8;color:var(--jade-deep);font-size:11.5px}
+.gaze-center{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted)}
+.gaze-center span{writing-mode:vertical-rl;letter-spacing:4px;font-size:13px}
+.gaze-line{position:relative;width:76px;height:1px;margin:12px 0;background:var(--red)}
+.gaze-line:after{
+  content:"";position:absolute;right:-1px;top:-4px;border-left:8px solid var(--red);
+  border-top:4px solid transparent;border-bottom:4px solid transparent
+}
+.compare-box{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:19px}
+.compare-item{padding:15px;border:1px solid var(--line);background:#faf8f1;transition:.2s}
+.compare-item.active{border-color:var(--jade);background:#e6eeea}
+.compare-item b{display:block;margin-bottom:7px;font-size:12.5px;color:var(--red)}
+.compare-item div{font-size:12px;line-height:1.7;color:var(--muted)}
+
+/* 留心簿 */
+.notebook-view{display:flex;flex-direction:column;overflow:hidden;padding:20px 28px 24px;background:linear-gradient(160deg,#e7e3da,#d0cabd)}
+.notebook-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+.notebook-head h2{margin:0;font-size:25px;font-weight:500;letter-spacing:5px;color:#38301f}
+.notebook-head p{margin:0;font-size:12px;color:#7a6f5c}
+.book-tabs{display:flex;gap:0}
+.book-tab{
+  position:relative;padding:9px 17px 11px;margin-left:-1px;border:1px solid #9c8a63;border-bottom:0;
+  background:linear-gradient(#efe6cd,#e2d4b2);color:#5b4d34;font-size:12.5px;letter-spacing:3px;cursor:pointer;
+  border-radius:7px 7px 0 0;transition:.2s
+}
+.book-tab:before{content:"";position:absolute;left:6px;right:6px;top:4px;height:1px;background:rgba(120,95,55,.4)}
+.book-tab.active{background:linear-gradient(#4a5f52,#3c5b4f);color:#f2ead2;border-color:#324a40;transform:translateY(-2px)}
+.book-holder{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
+#book{margin:0 auto}
+
+.pf-page{
+  position:relative;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 27px,rgba(120,100,60,.05) 28px),
+    radial-gradient(ellipse 40% 30% at 26% 22%,rgba(150,172,178,.12),transparent 60%),
+    radial-gradient(ellipse 34% 24% at 74% 74%,rgba(196,152,110,.11),transparent 60%),
+    linear-gradient(#f7efd9,#ece0c2);
+  color:#4a4030;overflow:hidden
+}
+.pf-inner{position:absolute;inset:0;padding:18px 20px}
+.pf-scroll{position:absolute;inset:18px 20px 30px 20px;overflow-y:auto;overflow-x:hidden}
+.pf-scroll::-webkit-scrollbar{width:6px}
+.pf-scroll::-webkit-scrollbar-thumb{background:rgba(120,95,55,.35);border-radius:3px}
+.pf-frame{position:relative;min-height:100%;padding:14px 15px;border:1.4px solid rgba(74,54,30,.5)}
+.pf-frame:before{content:"";position:absolute;inset:5px;border:1px solid rgba(74,54,30,.26);pointer-events:none}
+.pf-title{margin:0 0 7px;font-size:19px;font-weight:600;letter-spacing:3px;color:#3b3021;
+  font-family:"STKaiti","KaiTi","STXinwei","华文新魏",serif}
+.pf-desc{margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed rgba(150,120,70,.5);color:#665737;font-size:11.5px;line-height:1.72}
+.pf-entry{padding:8px 0;border-bottom:1px dashed rgba(150,120,70,.35)}
+.pf-entry:last-child{border-bottom:0}
+.pf-label{margin-bottom:4px;color:#8b4339;font-size:12.5px;font-weight:700;letter-spacing:1px}
+.pf-quote{margin-bottom:4px;color:#7a6a4b;font-size:11px;line-height:1.62;font-style:italic}
+.pf-analysis{color:#4a4030;font-size:11.5px;line-height:1.7}
+.pf-boundary{margin-top:4px;color:#726a58;font-size:10.5px;line-height:1.6}
+.pf-record{padding:8px 0;border-bottom:1px dashed rgba(150,120,70,.3)}
+.pf-record:last-of-type{border-bottom:0}
+.pf-empty{color:#928569;font-style:italic;font-size:11.5px;line-height:1.72}
+.pf-task{margin-top:11px;padding:11px;border-left:3px solid var(--red);background:rgba(154,76,65,.1)}
+.pf-task b{display:block;margin-bottom:5px;color:#5a3f28;font-size:12.5px}
+.pf-task span{font-size:11.5px;line-height:1.72;color:#54493a}
+.pf-pageno{position:absolute;left:0;right:0;bottom:9px;z-index:3;text-align:center;color:#9a8a64;font-size:13px;pointer-events:none}
+
+/* 封面 / 封底 */
+.pf-cover{overflow:hidden}
+.cover-cloth{
+  position:relative;height:100%;color:#eddfba;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px,transparent 2px 4px),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 2px,transparent 2px 4px),
+    linear-gradient(150deg,#3a5261,#28323b 70%,#222a31);
+  border:1px solid #1c2731
+}
+.cover-cloth:before{content:"";position:absolute;inset:9px;border:1px solid rgba(233,220,180,.34)}
+.cover-corner{position:absolute;width:34px;height:34px;border:2px solid rgba(233,220,180,.5)}
+.cover-corner.tl{left:5px;top:5px;border-right:0;border-bottom:0}
+.cover-corner.tr{right:5px;top:5px;border-left:0;border-bottom:0}
+.cover-corner.bl{left:5px;bottom:5px;border-right:0;border-top:0}
+.cover-corner.br{right:5px;bottom:5px;border-left:0;border-top:0}
+.cover-label{
+  position:absolute;left:16%;top:12%;width:78px;height:60%;
+  background:linear-gradient(#f5ecd2,#e9dcbb);border:1px solid #b6a175;
+  box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:flex-start;justify-content:center;padding-top:16px
+}
+.cover-label span{writing-mode:vertical-rl;font-size:30px;letter-spacing:10px;color:#33261a;font-weight:600;
+  font-family:"STKaiti","KaiTi","STXinwei",serif}
+.cover-sub{position:absolute;right:20%;bottom:16%;writing-mode:vertical-rl;font-size:14px;letter-spacing:5px;color:rgba(233,220,180,.82)}
+.cover-seal{
+  position:absolute;right:14%;top:16%;width:44px;height:44px;display:grid;place-items:center;
+  border:2px solid #b6503f;color:#d9705f;font-size:13px;line-height:1.1;letter-spacing:1px;
+  transform:rotate(-5deg);background:rgba(154,76,65,.08);font-family:"STKaiti","KaiTi",serif
+}
+.cover-end{position:absolute;left:0;right:0;top:34%;text-align:center}
+.cover-end span{font-size:34px;letter-spacing:14px;color:#eddfba;font-weight:600;font-family:"STKaiti","KaiTi",serif}
+.cover-end-line{position:absolute;left:0;right:0;top:52%;text-align:center;font-size:14px;letter-spacing:5px;color:rgba(233,220,180,.72)}
+.cover-end-seal{position:absolute;left:50%;top:64%;transform:translateX(-50%) rotate(-4deg);
+  width:46px;height:46px;display:grid;place-items:center;border:2px solid #b6503f;color:#d9705f;font-size:20px;
+  font-family:"STKaiti","KaiTi",serif}
+
+/* 降级：双页并排 */
+#book.fallback{display:flex;gap:20px;align-items:stretch;justify-content:center;width:100%}
+#book.fallback .pf-page{display:none;position:relative;width:44%;max-width:410px;height:min(548px,72vh);
+  box-shadow:0 12px 30px rgba(60,45,25,.28);animation:fadeSwap .5s ease}
+#book.fallback .pf-page.show{display:block}
+#book.fallback .pf-cover{display:none!important}
+@keyframes fadeSwap{from{opacity:0}to{opacity:1}}
+
+/* 弹窗 */
+.modal{position:absolute;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(27,41,35,.68);backdrop-filter:blur(5px)}
+.modal.open{display:flex}
+.modal-card{width:min(760px,84vw);max-height:78vh;display:grid;grid-template-columns:48% 52%;overflow:hidden;background:#f8f4e9;box-shadow:0 30px 80px rgba(0,0,0,.28)}
+.modal-visual{display:grid;place-items:center;min-height:420px;padding:25px;background:#dce3dd;color:var(--jade-deep);text-align:center;line-height:2;font-size:15px}
+.modal-copy{position:relative;overflow:auto;padding:30px}
+.modal-copy h2{margin:0 0 12px;font-size:22px;font-weight:500;letter-spacing:3px}
+.modal-copy p{margin:0;font-size:13px;line-height:1.9;color:var(--muted)}
+.meta{margin-top:18px}
+.meta div{padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px;line-height:1.65}
+.meta b{display:inline-block;width:64px;color:var(--ink)}
+.modal-close{position:absolute;right:14px;top:10px;border:0;background:none;font-size:26px;color:var(--muted);cursor:pointer}
+.toast{position:absolute;z-index:60;left:50%;bottom:27px;opacity:0;pointer-events:none;transform:translate(-50%,18px);padding:11px 17px;background:rgba(38,61,52,.95);color:#fff;font-size:12.5px;transition:.28s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:980px){
+  #app{padding:8px}.frame{grid-template-columns:70px minmax(0,1fr)}
+  .topbar{padding:0 17px}.brand-sub{display:none}
+  .chapter-layout{grid-template-columns:minmax(0,1fr) 330px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="frame">
+    <aside class="sidebar">
+      <div class="seal">林</div>
+      <nav class="nav" aria-label="网站导航">
+        <button class="nav-btn active" data-view="home">扉页</button>
+        <button class="nav-btn" data-view="chapter">入府</button>
+        <button class="nav-btn" data-view="perspective">目光</button>
+        <button class="nav-btn" data-view="notebook">留心簿</button>
+      </nav>
+      <div class="utility">
+        <button class="circle-btn" id="sound-button" aria-label="切换翻页音效">♪</button>
+        <button class="circle-btn" id="help-button" aria-label="阅读方法">?</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="brand">
+          <h1 id="main-title">林黛玉初入贾府</h1>
+          <span class="brand-sub">互动文本细读</span>
+        </div>
+        <div class="progress">
+          <span id="progress-label">扉页 · 未入府</span>
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <span id="progress-number">扉 页</span>
+        </div>
+      </header>
+
+      <section class="view active" id="view-home">
+        <div class="home-grid">
+          <div class="home-copy">
+            <h2 id="home-heading">初入<span class="accent">贾府</span></h2>
+            <div class="home-quote-wrap">
+              <div class="home-quote-rule"></div>
+              <p class="brush-quote">步步留心，时时在意，<br>不肯轻易多说一句话，<br>多行一步路。</p>
+            </div>
+            <button class="primary" id="enter-site">启帘入府　→</button>
+          </div>
+          <div class="home-art image-wrap">
+            <img class="original-image" data-path="assets/images/rjf.png" alt="黛玉乘轿初入贾府">
+            <div class="image-fallback">未找到扉页图片：assets/images/rjf.png</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-chapter">
+        <div class="chapter-layout">
+          <div class="scene image-wrap">
+            <img class="original-image" id="chapter-image" data-path="assets/images/rjf.png" alt="当前文本场景">
+            <div class="image-fallback" id="chapter-fallback">未找到当前场景图片。</div>
+            <div class="scene-shade"></div>
+            <div class="chapter-badge" id="chapter-badge">第一章　门从哪里开</div>
+            <div id="hotspot-layer"></div>
+            <div class="scene-switcher">
+              <button class="scene-dot active" data-scene="gate">府门</button>
+              <button class="scene-dot" data-scene="embrace">骨肉情深</button>
+              <button class="scene-dot" data-scene="meeting">宝黛初见</button>
+              <button class="scene-dot" data-scene="jade">宝玉摔玉</button>
+            </div>
+          </div>
+
+          <aside class="study-panel">
+            <div class="panel-kicker">观察 · 证据 · 判断 · 修正</div>
+            <h2 id="chapter-heading">与别家不同</h2>
+            <p id="chapter-summary"></p>
+            <div class="source-box" id="source-text"></div>
+
+            <div class="method-row">
+              <div class="method done" id="method-observe">①观察</div>
+              <div class="method" id="method-evidence">②证据</div>
+              <div class="method" id="method-judge">③判断</div>
+              <div class="method" id="method-revise">④修正</div>
+            </div>
+
+            <div class="question-box">
+              <strong id="question-title"></strong>
+              <div class="answers" id="answer-list"></div>
+              <p class="feedback" id="feedback-text"></p>
+
+              <div class="evidence-tools">
+                <button class="mini-btn" id="show-clue" disabled="">核对文本证据</button>
+                <button class="mini-btn" id="show-counter" disabled="">阅读补充证据</button>
+              </div>
+
+              <div class="deep-card" id="clue-card">
+                <b>文本证据</b>
+                <div id="clue-text"></div>
+              </div>
+
+              <div class="deep-card" id="counter-card">
+                <b>补充证据</b>
+                <div id="counter-text"></div>
+              </div>
+
+              <div class="revision-box" id="revision-box">
+                <div id="revision-prompt">加入补充证据后，你是否需要调整原来的判断？</div>
+                <div class="revision-actions">
+                  <button class="revision-btn" data-revision="keep">保留判断</button>
+                  <button class="revision-btn" data-revision="limit">补充条件</button>
+                  <button class="revision-btn" data-revision="change">修改判断</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view perspective-view" id="view-perspective">
+        <div class="section-head">
+          <div>
+            <h2 id="perspective-heading">观察与被观察</h2>
+            <p id="perspective-intro">人物在他人的目光中显现；观察别人时，也显露了观察者自己的立场。</p>
+          </div>
+          <div class="view-counter" id="gaze-counter">当前关系：宝玉 → 黛玉</div>
+        </div>
+
+        <div class="gaze-tabs">
+          <button class="gaze-tab active" data-gaze="baoyu">宝玉看黛玉</button>
+          <button class="gaze-tab" data-gaze="daiyu">黛玉看宝玉</button>
+          <button class="gaze-tab" data-gaze="crowd">众人看黛玉</button>
+          <button class="gaze-tab" data-gaze="xifeng">熙凤看黛玉</button>
+        </div>
+
+        <div class="perspective-grid">
+          <article class="person-card">
+            <div class="person-image image-wrap">
+              <img class="original-image" id="left-person-image" data-path="assets/images/image (12).jpeg" alt="观察者">
+              <div class="image-fallback">人物图片加载失败</div>
+              <div class="person-overlay"><h3 id="left-person-title">贾宝玉</h3></div>
+            </div>
+            <div class="person-copy">
+              <p id="left-person-text"></p>
+              <div class="tags" id="left-tags"></div>
+            </div>
+          </article>
+
+          <div class="gaze-center">
+            <span id="gaze-label">看与被看</span>
+            <div class="gaze-line"></div>
+            <button class="circle-btn" id="reverse-gaze" aria-label="切换宝黛视角">↔</button>
+          </div>
+
+          <article class="person-card">
+            <div class="person-image image-wrap">
+              <img class="original-image" id="right-person-image" data-path="assets/images/IMG_3687.JPG" alt="被观察者">
+              <div class="image-fallback">人物图片加载失败</div>
+              <div class="person-overlay"><h3 id="right-person-title">林黛玉</h3></div>
+            </div>
+            <div class="person-copy">
+              <p id="right-person-text"></p>
+              <div class="tags" id="right-tags"></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="compare-box">
+          <div class="compare-item" data-compare="crowd">
+            <b>众人眼中的黛玉</b>
+            <div>“举止言谈不俗”“怯弱不胜”“自然的风流态度”：重在整体气质。</div>
+          </div>
+          <div class="compare-item" data-compare="xifeng">
+            <b>熙凤眼中的黛玉</b>
+            <div>“标致”“通身的气派”“嫡亲的孙女”：目光连着身份关系与现场经营。</div>
+          </div>
+          <div class="compare-item active" data-compare="baoyu">
+            <b>宝玉眼中的黛玉</b>
+            <div>眉、目、愁、病、泪与心并见：目光深入到情感和精神气质。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view notebook-view" id="view-notebook">
+        <div class="notebook-head">
+          <div>
+            <h2 id="notebook-heading">留心簿</h2>
+            <p id="notebook-intro">点击书签翻页；也可拖动书页一角翻阅。</p>
+          </div>
+          <div class="book-tabs">
+            <button class="book-tab active" data-note="space">空间</button>
+            <button class="book-tab" data-note="people">人物形象</button>
+            <button class="book-tab" data-note="action">动作描写</button>
+            <button class="book-tab" data-note="foreshadow">伏笔</button>
+          </div>
+        </div>
+
+        <div class="book-holder">
+          <div id="book"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="help-modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-visual">文本细读方法<br>观察 → 证据 → 判断 → 修正</div>
+      <div class="modal-copy">
+        <button class="modal-close" id="help-close" aria-label="关闭">×</button>
+        <h2 id="help-title">怎样使用网站</h2>
+        <p id="help-description">先根据画面和原文作出判断。提交后，网站才会开放文本证据与补充证据。你可以保留判断，也可以补充条件或修改判断。</p>
+        <div class="meta">
+          <div><b>观察</b>发现反常、重复、对比与前后变化</div>
+          <div><b>证据</b>核对选项是否受到原文完整支持</div>
+          <div><b>判断</b>选择与当前证据最吻合的解释</div>
+          <div><b>修正</b>调整原有判断</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">已记录</div>
+</div>
+
+<script src="assets/js/page-flip.browser.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+const imageBasePath="assets/images/";
+const letters=["A","B","C","D"];
+const cnNum=["一","二","三","四","五","六","七","八"];
+const studentRecords={};
+let currentScene="gate";
+let soundOn=true;
+let phase="await";
+let initialIndex=null;
+let finalIndex=null;
+let audioCtx=null;
+let pageFlipObj=null;
+let flipReady=false;
+let notebookDirty=true;
+
+const sceneData={
+  gate:{
+    file:"rjf.png",
+    badge:"第一章　门从哪里开",
+    heading:"与别家不同",
+    summary:"把“正门不开”“角门出入”与门前排场、人员接替联系起来，辨认空间背后的制度。",
+    source:"“正门却不开，只有东西两角门有人出入……方是荣国府了。却不进正门，只进了西边角门。”",
+    question:"关于黛玉从西边角门进入荣国府的理解，最符合本段及相关情节的一项是：",
+    answers:[
+      "角门进入使黛玉意识到自己是外来投奔的亲戚，贾府以入门方式对她作出了身份提醒。",
+      "正门与角门的区别首先显示贾府日常出入有固定规则；黛玉的身份可能影响具体安排，但仅凭这一细节尚不能判断她受到轻视。",
+      "正门不开说明荣国府重视内外之别，而黛玉由角门进入，则进一步表明这一规则主要用来约束初次到访的女眷。",
+      "作者写这一细节主要为了交代路线，明晰黛玉入府的行动线路。"
+    ],
+    best:1,
+    evidence:"“正门却不开，只有东西两角门有人出入”说明角门本就是日常通道。",
+    counter:"贾母亲自搂抱黛玉，又按府中小姐的规格为她安排住处与丫鬟。这些情节与“走角门就是受到轻视”的解释相悖。",
+    analysis:"B项把能够直接确认的“日常出入规则”与仍需谨慎推断的“黛玉个人处境”区分开来。A项把谨慎的主要原因过度集中到入门方式；C项将规则限定为初访女眷，依据不足；D项低估了正门与角门本身已具有的秩序意味。",
+    hotspots:[
+      {t:"石狮、兽头大门和华冠丽服的仆役，共同构成怎样的门第印象？",x:26,y:86},
+      {t:"“敕造”表明了贾府怎样的政治身份？",x:38,y:9}
+    ],
+    note:"空间",
+    record:"正门与角门表现固定的出入规则；判断黛玉个人地位，还需要结合贾母迎接与后续安置。"
+  },
+  embrace:{
+    file:"image (22).png",
+    badge:"第三章　骨肉情深",
+    heading:"礼未成，情先至",
+    summary:"比较“方欲拜见”与“早被搂入”，理解动作顺序如何同时表现礼法与亲情。",
+    source:"“方欲拜见时，早被他外祖母一把搂入怀中，心肝儿肉叫着大哭起来。”",
+    question:"对“方欲拜见时，早被他外祖母一把搂入怀中”的理解，最恰当的一项是：",
+    answers:[
+      "“方欲”写黛玉准备行礼，“早被”写贾母先行搂抱，二者以动作先后表现贾母情绪之激动，礼法在此刻暂时退让于骨肉亲情。",
+      "黛玉准备拜见而未能完成，被贾母一把搂住，说明贾母在孙辈里最疼爱她，其他孙女都比不上独女唯一的血脉。",
+      "“一把”突出贾母动作急切，众人随之涕泣，说明她的悲痛迅速感染全场，众人与贾母感情共鸣，都是想到了黛玉的母亲贾敏。",
+      "贾母用搂抱代替拜见，既缓解黛玉初到陌生环境的拘谨，也有意向在场众人明确黛玉在家族中的特殊地位。"
+    ],
+    best:0,
+    evidence:"“方欲”表示拜见尚未完成，“早被”突出贾母动作抢先，“一把”增添速度与力度；随后黛玉仍正式拜见舅母等人。",
+    counter:"亲情打断礼仪之后，拜见程序仍继续。由此不能说场面的基调已经“完全”脱离礼法，也不能确认贾母的动作带有向众人宣示地位的明确意图。",
+    analysis:"A项同时照顾动作次序、情感力度和场面转换。B项证据不足；C项将众人各自的情感来源和强度与贾母等同；D项关于贾母“有意宣示”的动机超出了文本能够确认的范围。",
+    hotspots:[
+      {t:"若按通常礼仪，黛玉进入房中后首先应该完成什么动作？",x:60,y:40},
+      {t:"把“早被一把搂入”换成“被扶着坐下”，情感力度会发生怎样的变化？",x:73,y:52},
+      {t:"众人共同涕泣，大家的内心感受相同吗？",x:24,y:37}
+    ],
+    note:"动作描写",
+    record:"“方欲—早被—一把”让礼仪动作尚未完成，情感动作已经先一步发生；亲情暂时打断礼仪，但没有取消礼仪。"
+  },
+  meeting:{
+    file:"image (19).png",
+    badge:"第七章　宝黛初见",
+    heading:"似曾相识",
+    summary:"把王夫人的评价与黛玉的评价进行对比，辨认宝玉形象的多面性。",
+    source:"“好生奇怪，倒像在那里见过一般，何等眼熟到如此！”——“这个妹妹我曾见过的。”",
+    question:"关于宝玉出场前后的多重描写，下列理解最恰当的一项是：",
+    answers:[
+      "王夫人从家族教养角度强调宝玉的顽劣，黛玉则从容貌神情感到亲切；两种描写关注点不同，前者构成社会评价，后者则是私人感受。",
+      "王夫人的评价来自长期相处，黛玉的判断来自初次见面；作者以二者的差异说明熟悉人物未必能看清本质，陌生目光反而更为客观。",
+      "先写“混世魔王”，后写俊美容貌，主要是为了制造预期落差；至于宝玉的性格，还需由后文摔玉才能正式展开。",
+      "黛玉见到宝玉便觉得眼熟，说明此前负面评价已被推翻，宝玉在她心中由顽劣少年转变为值得信任的知己。"
+    ],
+    best:0,
+    evidence:"王夫人的“孽根祸胎、混世魔王”集中于宝玉是否符合家族规训；黛玉所见的“面若中秋之月”“虽怒时而若笑”集中于容貌、神态和亲切感。",
+    counter:"初见只能修正黛玉的第一印象，还不能证明她已经完整认识宝玉，更不能据此判定哪一种目光更“客观”。摔玉也不是人物性格的唯一开端。",
+    analysis:"A项准确区分了家族评价与私人感受。B项把视角差异转化为客观程度高低；C项把人物塑造推迟到摔玉，割裂了前后描写；D项将“似曾相识”扩大为完全信任和知己关系。",
+    hotspots:[
+      {t:"黛玉把“眼熟”留在心里，宝玉却当众说出，二人的表达方式展现了他们怎样的性格差异？",x:29,y:43},
+      {t:"先有他人评价、再有亲眼所见，这种次序如何影响读者的判断？",x:91,y:42}
+    ],
+    note:"人物形象",
+    record:"王夫人的评判标准着眼家族规训，黛玉着眼容貌性情；立场和关系不同，看到的人也自然不同。"
+  },
+  jade:{
+    file:"image (21).png",
+    badge:"第八章　宝玉摔玉",
+    heading:"宝玉摔玉",
+    summary:"揣摩直接写出的情绪和隐藏在行为之下的深层动机，试探究“通灵宝玉”的关键象征意义。",
+    source:"“什么罕物，连人之高低不择，还说‘通灵’不‘通灵’呢！我也不要这劳什子了！”",
+    question:"关于宝玉摔玉的动机与意义，下列理解最符合本段证据的一项是：",
+    answers:[
+      "“登时”“狠命”写宝玉骤然失控，“连人之高低不择”又显出他不愿以玉判断人的价值；展现出他率真直接的性格特征。",
+      "宝玉因黛玉没有玉而摔玉，说明他已把黛玉的地位置于通灵玉之上。",
+      "宝玉称玉为“劳什子”，摔玉是借黛玉无玉之事，表达自己对封建秩序的反叛。",
+      "宝玉摔玉后经贾母劝解便重新戴上，说明他并不坚定，因此摔玉主要是心情不快的任性反应。"
+    ],
+    best:0,
+    evidence:"“登时”“发作”“狠命”直接写情绪骤变；“连人之高低不择”则是宝玉自己的判断，明确涉及以物区分人的价值逻辑。",
+    counter:"宝玉重新戴上玉，并不能抹去他说过的话；同样，“连人之高低不择”也不能单独证明他已自觉反叛封建制度。文本允许多层解释，但需要区分证据强弱。",
+    analysis:"A项较为全面且论述恰当。B项将一时言行上升为自觉否定家族身份；C证据不足，他此时和黛玉并未熟悉；D项用重新戴玉行为遮盖了他说过的话。",
+    hotspots:[
+      {t:"“登时”“狠命”表现了什么？",x:53,y:26},
+      {t:"“连人之高低不择”，宝玉心中人之高低是如何决定的？",x:50,y:52},
+      {t:"贾母称其为“命根子”，宝玉称其为“劳什子”，二人赋予玉的意义相同吗？",x:76,y:84}
+    ],
+    note:"动作描写",
+    record:"“登时、狠命”写冲动，“连人之高低不择”写价值立场；两者可以同时成立，但更深的身份象征仍需整本书印证。"
+  }
+};
+
+const gazeData={
+  baoyu:{
+    label:"当前关系：宝玉 → 黛玉",center:"看与被看",
+    left:["贾宝玉","image (12).jpeg","宝玉不先看黛玉的衣饰，而注意她的眉、目、愁、病、泪与心。他看见的重点，也显露自己对情感与精神气质的敏锐。",["情感敏锐","率真外露","不重衣饰"]],
+    right:["林黛玉","IMG_3687.JPG","“似蹙非蹙”的眉、“似喜非喜”的目，以及愁、病、泪光和聪慧，共同构成宝玉眼中独特的黛玉。",["疾病缠身","自然风流","聪慧过人"]],
+    compare:"baoyu"
+  },
+  daiyu:{
+    label:"当前关系：黛玉 → 宝玉",center:"看与被看",
+    left:["林黛玉","IMG_3687.JPG","黛玉先听见“混世魔王”等评价，亲眼见到宝玉后却感到似曾相识。她修正了预期，却仍把惊异留在心中。",["先有耳闻","心中惊异","克制不言"]],
+    right:["贾宝玉","image (12).jpeg","黛玉所见是“面若中秋之月”“虽怒时而若笑”的少年，与长辈从规训角度作出的评价并不相同。",["俊美多情","神态鲜明","评价反差"]],
+    compare:"baoyu"
+  },
+  crowd:{
+    label:"当前关系：众人 → 黛玉",center:"共同观看",
+    left:["贾府众人","image (19).png","众人的目光形成一种共同印象：黛玉年貌虽小，却举止言谈不俗；身体怯弱，又有自然的风流态度。",["整体印象","举止教养","病弱气质"]],
+    right:["林黛玉","IMG_3687.JPG","在众人的共同观看中，黛玉首先以“不俗、怯弱、风流”的整体气质进入贾府的评价系统。",["被观察者","气质先行","尚待认识"]],
+    compare:"crowd"
+  },
+  xifeng:{
+    label:"当前关系：熙凤 → 黛玉",center:"目光与话语",
+    left:["王熙凤","image (11).jpeg","熙凤称赞黛玉“标致”“通身的气派”，又说她像贾母嫡亲的孙女。她的观看同时照顾黛玉、贾母与在场众人的感受。",["出身不凡","操控气氛","受贾母喜爱"]],
+    right:["林黛玉","IMG_3687.JPG","熙凤所强调的不是黛玉内在的愁与情，而是她的气派及其在亲缘关系中的位置。",["标致气派","亲缘位置","被言说者"]],
+    compare:"xifeng"
+  }
+};
+
+const noteOrder=["space","people","action","foreshadow"];
+const noteData={
+  space:{
+    title:"空间",desc:"由建筑、出入路径与人员接替，读出荣国府的政治身份、空间层次和日常秩序。",
+    entries:[
+      ["门前排场","“两个大石狮子”“三间兽头大门”“十来个华冠丽服之人”","建筑规格、门人数量与衣着共同构成显赫门第的第一印象。","多个细节相互印证。"],
+      ["正门与角门","“正门却不开，只有东西两角门有人出入”","正门和角门具有不同使用规则，日常生活也被礼制组织。","不能仅凭黛玉走角门便断定她受到轻视。"],
+      ["层层换人","轿夫退出、小厮接替、垂花门落轿、婆子迎接","人员随空间深入不断更换，显示内外院分界和进入权限。","既包含等级差异，也包含分工、性别边界等因素。"]
+    ]
+  },
+  people:{
+    title:"人物形象",desc:"从多角度观察、分析人物形象。",
+    entries:[
+      ["林黛玉","“步步留心，时时在意”及让座、改口、照样漱口等细节","谨慎中包含教养、观察力与适应能力。","不宜简单等同于胆小、自卑或多愁善感。"],
+      ["王熙凤","先闻笑声、华丽出场、转悲为喜、安排事务","语言机敏、善察人意、贾府的管理者，情感表达也带有隐含意味。","不能用“虚伪圆滑”抹去人物的才干和复杂性。"],
+      ["贾宝玉","他人贬评、黛玉所见、取字与摔玉","率真、多情、冲动，对以物分高低有所不满，又无法摆脱家族赋予的身份。","不能只解释为任性，也不宜直接拔高为成熟的反抗者。"]
+    ]
+  },
+  action:{
+    title:"动作描写",desc:"动词或副词既能改变动作节奏，也能呈现情感与人物关系。",
+    entries:[
+      ["“方欲—早被—一把”","“方欲拜见时，早被他外祖母一把搂入怀中”","“情”暂时越过“礼”。","亲情打断礼仪，并不等于礼仪被取消。"],
+      ["“忙转悲为喜”","“忙转悲为喜，笑道……”","“忙”突出熙凤对贾母反应的敏锐及其迅速调节场面情绪的能力。","既可见逢迎与表演，也不能据此否定全部真实情感。"],
+      ["“登时—狠命”","“登时发作起痴狂病来……狠命摔去”","副词写出情绪骤变与动作力度，形成强烈现场感。","冲动是直接证据；价值抵触还需结合宝玉自己的语言。"]
+    ]
+  },
+  foreshadow:{
+    title:"伏笔",desc:"区分本回直接呈现的线索、整本书能够印证的联系，以及尚待验证的研究推测。",
+    entries:[
+      ["似曾相识","黛玉心想“倒像在那里见过”，宝玉说“这个妹妹我曾见过”","本回直接写出二人未经解释的亲近感，并以不同表达方式呈现性格差异。",""],
+      ["疾病与哭声","黛玉自幼服药；和尚说不许听哭声、不见外姓亲友","疾病、眼泪与亲缘在入府之初同时出现，形成命运阴影。",""],
+      ["通灵宝玉","宝玉摔玉、众人争捡、贾母称为“命根子”","玉既是物件，也是家族赋予宝玉的特殊身份标记。",""]
+    ]
+  }
+};
+
+function byId(id){return document.getElementById(id)}
+
+function setLocalImage(image,path,fallback){
+  image.onerror=function(){image.style.display="none";if(fallback)fallback.classList.add("show")};
+  image.onload=function(){image.style.display="block";if(fallback)fallback.classList.remove("show")};
+  image.src=path;
+}
+function initializeImages(){
+  document.querySelectorAll("img[data-path]").forEach(function(image){
+    setLocalImage(image,image.dataset.path,image.parentElement.querySelector(".image-fallback"));
+  });
+}
+function showToast(text){
+  const toast=byId("toast");
+  toast.textContent=text;toast.classList.add("show");
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(function(){toast.classList.remove("show")},1900);
+}
+function playPageSound(){
+  if(!soundOn)return;
+  try{
+    if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==="suspended")audioCtx.resume();
+    const dur=0.5,rate=audioCtx.sampleRate,len=Math.floor(rate*dur);
+    const buffer=audioCtx.createBuffer(1,len,rate),data=buffer.getChannelData(0);
+    for(let i=0;i<len;i++){const t=i/len;data[i]=(Math.random()*2-1)*Math.pow(1-t,1.8)*(0.5+0.5*Math.sin(t*44))}
+    const src=audioCtx.createBufferSource();src.buffer=buffer;
+    const flt=audioCtx.createBiquadFilter();flt.type="bandpass";flt.frequency.value=1700;flt.Q.value=0.8;
+    const g=audioCtx.createGain();g.gain.value=0.28;
+    src.connect(flt);flt.connect(g);g.connect(audioCtx.destination);src.start();
+  }catch(e){}
+}
+
+const staticProgress={
+  home:["扉页 · 未入府","12%","扉 页"],
+  perspective:["目光关系 · 对比","100%","目 光"],
+  notebook:["留心簿 · 证据","100%","留 心 簿"]
+};
+const chapterProgress={
+  gate:["入府 · 府门","25%","01 / 04"],
+  embrace:["入府 · 骨肉情深","50%","02 / 04"],
+  meeting:["入府 · 宝黛初见","75%","03 / 04"],
+  jade:["入府 · 宝玉摔玉","100%","04 / 04"]
+};
+function setProgress(arr){
+  byId("progress-label").textContent=arr[0];
+  byId("progress-fill").style.width=arr[1];
+  byId("progress-number").textContent=arr[2];
+}
+
+function resetMethod(){
+  ["observe","evidence","judge","revise"].forEach(function(n){byId("method-"+n).classList.remove("done")});
+  byId("method-observe").classList.add("done");
+}
+function markMethod(name){byId("method-"+name).classList.add("done")}
+function markSelected(index){
+  document.querySelectorAll(".answer").forEach(function(b){b.classList.toggle("selected",Number(b.dataset.index)===index)});
+}
+function noteKeyForScene(scene){return scene==="gate"?"space":scene==="meeting"?"people":"action"}
+
+function renderHotspots(data){
+  const layer=byId("hotspot-layer");
+  layer.innerHTML="";
+  data.hotspots.forEach(function(h,i){
+    const btn=document.createElement("button");
+    btn.className="hotspot";
+    btn.style.left=h.x+"%";btn.style.top=h.y+"%";
+    btn.setAttribute("aria-label","观察细节"+(i+1));
+    btn.addEventListener("click",function(){
+      byId("feedback-text").textContent=h.t;markMethod("observe");
+    });
+    layer.appendChild(btn);
+  });
+}
+
+function renderScene(name){
+  currentScene=name;phase="await";initialIndex=null;finalIndex=null;
+  const data=sceneData[name];
+  byId("chapter-badge").textContent=data.badge;
+  byId("chapter-heading").textContent=data.heading;
+  byId("chapter-summary").textContent=data.summary;
+  byId("source-text").textContent=data.source;
+  byId("question-title").textContent=data.question;
+  byId("feedback-text").textContent="先观察场景并阅读原文，再选择与当前证据最吻合的解释。";
+  const image=byId("chapter-image"),path=imageBasePath+data.file;
+  image.dataset.path=path;setLocalImage(image,path,byId("chapter-fallback"));
+  const list=byId("answer-list");list.innerHTML="";
+  data.answers.forEach(function(answer,index){
+    const button=document.createElement("button");button.className="answer";button.dataset.index=String(index);
+    const l=document.createElement("span");l.className="answer-letter";l.textContent=letters[index];
+    const t=document.createElement("span");t.textContent=answer;
+    button.appendChild(l);button.appendChild(t);list.appendChild(button);
+  });
+  renderHotspots(data);
+  byId("clue-card").classList.remove("show");byId("counter-card").classList.remove("show");
+  byId("revision-box").classList.remove("show");
+  byId("show-clue").disabled=true;byId("show-counter").disabled=true;
+  document.querySelectorAll(".revision-btn").forEach(function(b){b.classList.remove("selected")});
+  document.querySelectorAll(".scene-dot").forEach(function(d){d.classList.toggle("active",d.dataset.scene===name)});
+  resetMethod();
+  if(byId("view-chapter").classList.contains("active"))setProgress(chapterProgress[name]);
+}
+function firstSelect(index){
+  initialIndex=index;phase="locked";markSelected(index);
+  byId("feedback-text").textContent="判断已暂存。请核对文本证据，再决定是否保留或修正。";
+  byId("show-clue").disabled=false;byId("show-counter").disabled=true;markMethod("judge");
+}
+function reSelect(index){finalIndex=index;markSelected(index);finalize("change")}
+function showClue(){
+  byId("clue-text").textContent=sceneData[currentScene].evidence;
+  byId("clue-card").classList.toggle("show");byId("show-counter").disabled=false;markMethod("evidence");
+}
+function showCounter(){
+  byId("counter-text").textContent=sceneData[currentScene].counter;
+  byId("counter-card").classList.toggle("show");byId("revision-box").classList.add("show");
+}
+function finalize(type){
+  phase="done";
+  const data=sceneData[currentScene];
+  const actionText=type==="keep"?"保留了原判断":type==="limit"?"为原判断补充了条件":"修改了原判断";
+  byId("feedback-text").textContent=actionText+"。参考分析："+data.analysis;markMethod("revise");
+  const nk=noteKeyForScene(currentScene);
+  studentRecords[currentScene]={
+    noteKey:nk,scene:data.heading,
+    initial:letters[initialIndex]+"．"+data.answers[initialIndex],
+    final:letters[finalIndex]+"．"+data.answers[finalIndex],
+    changed:finalIndex!==initialIndex,action:actionText,record:data.record
+  };
+  notebookDirty=true;
+  showToast("已写入留心簿");
+}
+
+function renderTags(container,tags){
+  container.innerHTML="";
+  tags.forEach(function(tag){const s=document.createElement("span");s.className="tag";s.textContent=tag;container.appendChild(s)});
+}
+function renderGaze(key){
+  const data=gazeData[key];
+  byId("gaze-counter").textContent=data.label;byId("gaze-label").textContent=data.center;
+  const left=data.left,right=data.right;
+  byId("left-person-title").textContent=left[0];byId("left-person-text").textContent=left[2];
+  renderTags(byId("left-tags"),left[3]);
+  setLocalImage(byId("left-person-image"),imageBasePath+left[1],byId("left-person-image").parentElement.querySelector(".image-fallback"));
+  byId("right-person-title").textContent=right[0];byId("right-person-text").textContent=right[2];
+  renderTags(byId("right-tags"),right[3]);
+  setLocalImage(byId("right-person-image"),imageBasePath+right[1],byId("right-person-image").parentElement.querySelector(".image-fallback"));
+  document.querySelectorAll(".gaze-tab").forEach(function(t){t.classList.toggle("active",t.dataset.gaze===key)});
+  document.querySelectorAll(".compare-item").forEach(function(i){i.classList.toggle("active",i.dataset.compare===data.compare)});
+}
+
+function readingPageHTML(key,idx){
+  const d=noteData[key];
+  let s='<div class="pf-page" data-key="'+key+'" data-role="reading"><div class="pf-inner">';
+  s+='<div class="pf-scroll"><div class="pf-frame">';
+  s+='<div class="pf-title">'+d.title+'</div><div class="pf-desc">'+d.desc+'</div>';
+  d.entries.forEach(function(e){
+    s+='<div class="pf-entry"><div class="pf-label">'+e[0]+'</div><div class="pf-quote">'+e[1]+'</div><div class="pf-analysis">'+e[2]+'</div>';
+    if(e[3])s+='<div class="pf-boundary">解释边界：'+e[3]+'</div>';
+    s+='</div>';
+  });
+  s+='</div></div><div class="pf-pageno">'+cnNum[idx*2]+'</div></div></div>';
+  return s;
+}
+function recordPageHTML(key,idx){
+  let s='<div class="pf-page" data-key="'+key+'" data-role="record"><div class="pf-inner">';
+  s+='<div class="pf-scroll"><div class="pf-frame">';
+  s+='<div class="pf-title">我的记录</div>';
+  const matched=Object.keys(studentRecords).map(function(sc){return studentRecords[sc]}).filter(function(r){return r.noteKey===key});
+  if(matched.length===0){
+    s+='<div class="pf-empty">'+(key==="foreshadow"
+      ?"伏笔以整本书线索为主。完成其他场景后，可在综合任务中调用这些线索。"
+      :"尚未写入本页记录。请到“入府”完成判断、阅读补充证据并作出修正。")+'</div>';
+  }else{
+    matched.forEach(function(r){
+      s+='<div class="pf-record"><div class="pf-label">'+r.scene+'</div>';
+      s+='<div class="pf-analysis">初次判断：'+r.initial+'</div>';
+      if(r.changed)s+='<div class="pf-analysis">最终判断：'+r.final+'</div>';
+      s+='<div class="pf-boundary">处理：'+r.action+'。归纳：'+r.record+'</div></div>';
+    });
+  }
+  if(key==="foreshadow"){
+    s+='<div class="pf-task"><b>综合任务</b><span>贾府既以亲情接纳黛玉，也以空间、礼法和言语规则要求她不断观察与调整。请你结合《红楼梦》的原文进行解释。</span></div>';
+  }
+  s+='</div></div><div class="pf-pageno">'+cnNum[idx*2+1]+'</div></div></div>';
+  return s;
+}
+function coverFrontHTML(){
+  return '<div class="pf-page pf-cover pf-cover-front" data-density="hard"><div class="cover-cloth">'+
+    '<div class="cover-corner tl"></div><div class="cover-corner tr"></div><div class="cover-corner bl"></div><div class="cover-corner br"></div>'+
+    '<div class="cover-label"><span>留心簿</span></div>'+
+    '<div class="cover-seal">留<br>心</div>'+
+    '<div class="cover-sub">《林黛玉初入贾府》文本细读</div>'+
+    '</div></div>';
+}
+function coverBackHTML(){
+  return '<div class="pf-page pf-cover pf-cover-back" data-density="hard"><div class="cover-cloth">'+
+    '<div class="cover-corner tl"></div><div class="cover-corner tr"></div><div class="cover-corner bl"></div><div class="cover-corner br"></div>'+
+    '<div class="cover-end"><span>卷　终</span></div>'+
+    '<div class="cover-end-line">步步留心，时时在意</div>'+
+    '<div class="cover-end-seal">阅</div>'+
+    '</div></div>';
+}
+function buildBookHTML(){
+  let s=coverFrontHTML();
+  noteOrder.forEach(function(key,idx){s+=readingPageHTML(key,idx)+recordPageHTML(key,idx)});
+  s+=coverBackHTML();
+  return s;
+}
+
+function destroyFlip(){
+  if(pageFlipObj){try{pageFlipObj.destroy()}catch(e){}pageFlipObj=null}
+  flipReady=false;
+}
+function setupNotebook(){
+  const book=byId("book");
+  destroyFlip();
+  book.className="";
+  book.innerHTML=buildBookHTML();
+  if(window.St&&St.PageFlip){
+    try{
+      pageFlipObj=new St.PageFlip(book,{
+        width:400,height:540,size:"stretch",
+        minWidth:300,maxWidth:460,minHeight:420,maxHeight:600,
+        maxShadowOpacity:0.5,showCover:true,usePortrait:false,
+        flippingTime:1300,mobileScrollSupport:true
+      });
+      pageFlipObj.loadFromHTML(book.querySelectorAll(".pf-page"));
+      pageFlipObj.on("flip",function(){playPageSound()});
+      flipReady=true;
+    }catch(e){flipReady=false;fallbackBook();}
+  }else{
+    fallbackBook();
+  }
+  gotoNote(getActiveNote(),false);
+  notebookDirty=false;
+}
+function fallbackBook(){byId("book").classList.add("fallback")}
+function getActiveNote(){const t=document.querySelector(".book-tab.active");return t?t.dataset.note:"space"}
+function gotoNote(key,animate){
+  const idx=noteOrder.indexOf(key);
+  document.querySelectorAll(".book-tab").forEach(function(t){t.classList.toggle("active",t.dataset.note===key)});
+  if(flipReady&&pageFlipObj){
+    const target=idx*2+1;
+    try{animate?pageFlipObj.flip(target):pageFlipObj.turnToPage(target)}catch(e){}
+  }else{
+    const book=byId("book");
+    book.querySelectorAll(".pf-page").forEach(function(p){p.classList.remove("show")});
+    book.querySelectorAll('.pf-page[data-key="'+key+'"]').forEach(function(p){p.classList.add("show")});
+    if(animate)playPageSound();
+  }
+}
+function ensureNotebook(){if(notebookDirty||!byId("book").hasChildNodes())setupNotebook()}
+
+function showView(name){
+  document.querySelectorAll(".view").forEach(function(v){v.classList.toggle("active",v.id==="view-"+name)});
+  document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.toggle("active",b.dataset.view===name)});
+  if(name==="chapter"){setProgress(chapterProgress[currentScene]);}
+  else{setProgress(staticProgress[name]);}
+  if(name==="notebook")setTimeout(ensureNotebook,80);
+}
+
+document.querySelectorAll(".nav-btn").forEach(function(b){b.addEventListener("click",function(){showView(b.dataset.view)})});
+byId("enter-site").addEventListener("click",function(){showView("chapter")});
+document.querySelectorAll(".scene-dot").forEach(function(b){b.addEventListener("click",function(){renderScene(b.dataset.scene)})});
+byId("answer-list").addEventListener("click",function(event){
+  const button=event.target.closest(".answer");if(!button)return;
+  const index=Number(button.dataset.index);
+  if(phase==="await")firstSelect(index);else if(phase==="revising")reSelect(index);
+});
+byId("show-clue").addEventListener("click",showClue);
+byId("show-counter").addEventListener("click",showCounter);
+document.querySelectorAll(".revision-btn").forEach(function(button){
+  button.addEventListener("click",function(){
+    const type=button.dataset.revision;
+    if(type==="change"){
+      phase="revising";finalIndex=null;
+      document.querySelectorAll(".revision-btn").forEach(function(b){b.classList.remove("selected")});
+      button.classList.add("selected");
+      document.querySelectorAll(".answer").forEach(function(b){b.classList.remove("selected")});
+      byId("feedback-text").textContent="请在上方选项中重新选择你的判断。";return;
+    }
+    finalIndex=initialIndex;
+    document.querySelectorAll(".revision-btn").forEach(function(b){b.classList.remove("selected")});
+    button.classList.add("selected");finalize(type);
+  });
+});
+document.querySelectorAll(".gaze-tab").forEach(function(b){b.addEventListener("click",function(){renderGaze(b.dataset.gaze)})});
+byId("reverse-gaze").addEventListener("click",function(){
+  const a=document.querySelector(".gaze-tab.active");renderGaze(a&&a.dataset.gaze==="baoyu"?"daiyu":"baoyu");
+});
+document.querySelectorAll(".book-tab").forEach(function(b){b.addEventListener("click",function(){gotoNote(b.dataset.note,true)})});
+byId("help-button").addEventListener("click",function(){byId("help-modal").classList.add("open");byId("help-modal").setAttribute("aria-hidden","false")});
+byId("help-close").addEventListener("click",function(){byId("help-modal").classList.remove("open");byId("help-modal").setAttribute("aria-hidden","true")});
+byId("help-modal").addEventListener("click",function(e){if(e.target===byId("help-modal"))byId("help-close").click()});
+byId("sound-button").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"♪":"×";showToast(soundOn?"翻页音效已开启":"翻页音效已关闭")});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&byId("help-modal").classList.contains("open"))byId("help-close").click()});
+
+initializeImages();
+renderScene("gate");
+renderGaze("baoyu");
+})();
+</script>
+
+</body></html>
